@@ -56,7 +56,7 @@ def search_gists(db_connection, **kwargs):
             params = {'created_at': kwargs['created_at__lte']
                      ,'updated_at': kwargs['updated_at__gte']        
             }
-            gists = db_connection.execute("SELECT * FROM gists WHERE created_at<=:created_at and updated_at>=:updated_at;", params)
+            gists = db_connection.execute("SELECT * FROM gists WHERE datetime(created_at)<=datetime(:created_at) and datetime(updated_at)>=datetime(:updated_at);", params)
         
             for gist in gists:
                 yield Gist(gist)
@@ -66,7 +66,7 @@ def search_gists(db_connection, **kwargs):
         # This does not get called ???
         else:
             params = {'created_at': kwargs['created_at__lte']}
-            gists = db_connection.execute("SELECT * FROM gists WHERE created_at<=:created_at;", params)
+            gists = db_connection.execute("SELECT * FROM gists WHERE datetime(created_at)<=datetime(:created_at);", params)
     
             for gist in gists:
                 yield Gist(gist)
