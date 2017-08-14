@@ -1,18 +1,10 @@
 import requests
 import sqlite3
-import os.path
 import pprint
-# source: http://bit.ly/2vLbHSM
-# package_dir = os.path.abspath(os.path.dirname(__file__))
-# database_path = os.path.join(package_dir, 'gists.db')
 
 # db = sqlite3.connect('database_path')
 # cursor = db.execute("SELECT * FROM gists")
 # results = cursor.fetchall()
-# print(results)
-
-# db.commit()
-
 
 def import_gists_to_database(db, username, commit=True):
     r = requests.get('https://api.github.com/users/{}/gists'.format(username))
@@ -40,8 +32,9 @@ def import_gists_to_database(db, username, commit=True):
               , 'comments': record['comments']
               , 'comments_url': record['comments_url']}
         db.execute(query, params)
-        if commit: 
-            db.commit()
-        
+    if commit: 
+        db.commit()
+
 # username = 'gvanrossum'
 # import_gists_to_database(db, username)
+# to run uncomment^:
